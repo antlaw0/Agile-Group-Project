@@ -4,6 +4,7 @@ import requests
 import shutil
 from PIL import Image
 import os
+import gui
 #used some code from Claras git hub repository https://github.com/minneapolis-edu/HelloFlikrGUI/blob/master/FlickrGUI.py
 
 class Flickr(Frame):
@@ -11,7 +12,8 @@ class Flickr(Frame):
 
     def __init__(self):
 
-        search = input('searching for')
+        search = gui.searchText()
+        print(search)
         Frame.__init__(self)
         self.grid()
 
@@ -32,26 +34,26 @@ class Flickr(Frame):
         pprint(photos)
 
 
-        fetchPhotoURL = results['photos']['photo'][0]['url_o']
+        fetchPhotoURL = results['photos']['photo'][0]['url_l']
         print(fetchPhotoURL)  # Again, just checking
 
         # Reference: http://stackoverflow.com/questions/13137817/how-to-download-image-using-requests
 
-        catPicFileNameJpg = 'cat.jpg'
-        catPicFileGif = 'cat.gif'
+        searchPicFileNameJpg = 'search.jpg'
+        searchPicFileGif = 'search.gif'
 
 
         resp = requests.get(fetchPhotoURL, stream=True)
-        with open(catPicFileNameJpg, 'wb') as out_file:
+        with open(searchPicFileNameJpg, 'wb') as out_file:
             shutil.copyfileobj(resp.raw, out_file)
         del resp
 
         # Flickr returns a jpg. Tkinter displays gif. Use pillow to convert the JPG to GIF
         # Reference https://pillow.readthedocs.org/handbook/tutorial.html
-        Image.open(catPicFileNameJpg).save(catPicFileGif)
+        Image.open(searchPicFileNameJpg).save(searchPicFileGif)
 
         # Add PictureImage to GUI
-        _catPic = PhotoImage(file=catPicFileGif)
+        _catPic = PhotoImage(file=searchPicFileGif)
         _catPicLabel = Label(self, image=_catPic)
         _catPicLabel.image = _catPic
         _catPicLabel.grid()
