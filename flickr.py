@@ -1,10 +1,9 @@
 from tkinter import *
 from flickrapi import FlickrAPI
-import urllib.request
 import requests
-import json
 import shutil
 from PIL import Image
+import os
 #used some code from Claras git hub repository https://github.com/minneapolis-edu/HelloFlikrGUI/blob/master/FlickrGUI.py
 
 class Flickr(Frame):
@@ -20,8 +19,8 @@ class Flickr(Frame):
         self._label = Label(self, text="Here are some pictures of " + search)
         self._label.grid()
         #code to call API from here http://joequery.me/code/flickr-api-image-search-python/
-        FLICKR_PUBLIC = '2996c5433c7c633978adb98583ac21fd'
-        FLICKR_SECRET = 'Ydbfbfec07e8f9c22'
+        FLICKR_PUBLIC = os.environ['FLICKR_PUBLIC']
+        FLICKR_SECRET = os.environ['FLICKR_SECRET']
         flickr = FlickrAPI(FLICKR_PUBLIC, FLICKR_SECRET, format='parsed-json')
         print ('n',flickr)
         extras='url_sq,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l,url_o'
@@ -33,7 +32,7 @@ class Flickr(Frame):
         pprint(photos)
 
 
-        fetchPhotoURL = results['photos']['photo'][0]['url_c']
+        fetchPhotoURL = results['photos']['photo'][0]['url_o']
         print(fetchPhotoURL)  # Again, just checking
 
         # Reference: http://stackoverflow.com/questions/13137817/how-to-download-image-using-requests
