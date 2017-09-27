@@ -1,4 +1,5 @@
 import tkinter
+import wikipedia
 
 searchText=""
 
@@ -15,17 +16,11 @@ def on_button_click():
 	#assigns searchText to string in entry
 	searchText=entry.get()
 	print("Entry is: "+entry.get())
-	print("Checkbox 1 state is: "+str(checkButtonVar1.get()))
-	print("Checkbox 2 state is: "+str(checkButtonVar2.get()))
-	print("Checkbox 3 state is: "+str(checkButtonVar3.get()))
-	destroy_main_window()
-	create_results_window()
-	
+	display_option1()
 #create main window
 def create_main_window():
 	#insert text box for searching
-	global searchText, entry, searchButton, checkButton1, checkButton2, checkButton3, checkButtonVar1, checkButtonVar2, checkButtonVar3
-	
+	global searchText, entry, searchButton, label
 	
 	entry = tkinter.Entry()
 	entry.delete(0, len(searchText))
@@ -36,35 +31,10 @@ def create_main_window():
 	searchButton = tkinter.Button(text="SEARCH", command=on_button_click)
 	searchButton.grid(row=0, column=1)
 
-	#first checkbox
-	checkButtonVar1= tkinter.IntVar()
-	checkButton1 = tkinter.Checkbutton(text="Wikipedia", variable = checkButtonVar1)
-	checkButton1.grid(row=1,column=0)
-        
-	#second checkbox
-	checkButtonVar2= tkinter.IntVar()
-	checkButton2 = tkinter.Checkbutton(text="Option 2", variable = checkButtonVar2)
-	checkButton2.grid(row=2,column=0)
-
-	#third checkbox
-	checkButtonVar3 = tkinter.IntVar()
-	checkButton3 = tkinter.Checkbutton(text="Option 3", variable = checkButtonVar3)
-	checkButton3.grid(row=3,column=0)
-
-#clear main window
-def destroy_main_window():
-	entry.destroy()
-	searchButton.destroy()
-	checkButton1.destroy()
-	checkButton2.destroy()
-	checkButton3.destroy()
-
-#creates tabbed results window
-def create_results_window():
-	global labelFrame, buttonFrame, tab1, tab2, tab3, goBackButton, label
+	
 	#create three tab buttons
 	buttonFrame = tkinter.Frame()
-	buttonFrame.grid(row=0,column=0)
+	buttonFrame.grid(row=1,column=0)
 	
 	tab1 = tkinter.Button(buttonFrame, text="Wikipedia", command=display_option1)
 	tab1.grid(row=0,column=0)
@@ -73,22 +43,18 @@ def create_results_window():
 	tab3 = tkinter.Button(buttonFrame, text="Option 3", command=display_option3)
 	tab3.grid(row=0,column=2)
 	labelFrame = tkinter.Frame()
-	labelFrame.grid(row=1,column=0)
+	labelFrame.grid(row=2,column=0)
 	label = tkinter.Label(labelFrame, text="This is where text would go for the content of the API.")
 	#label.config(justify=tkinter.LEFT)
-	#label.config(wrap=320)
+	label.config(wrap=600)
 	label.grid(row=1,column=0)
-	goBackButton= tkinter.Button(text="Go Back", command=go_back_to_main_window)
-	goBackButton.grid(row=0,column=3)
-
-def go_back_to_main_window():
-	destroy_results_window()
-	create_main_window()
 	
+		
 #display option 1 results, currently Wikipedia
 def display_option1():
-	#todo: Wikipedia API call
-	print("Wikipedia")
+	global wikiSummaryText
+	wikiSummaryText = wikipedia.summary(searchText)
+	label.config(text=wikiSummaryText)
 	
 def display_option2():
 	#todo: put option 2 api call here
