@@ -73,8 +73,8 @@ def display_option2():
 
     searchPicFileGif = 'search.gif'
     picture = PhotoImage(file=searchPicFileGif)
-    panel = label.config(image=picture)
-    panel(side="bottom", fill="both", expand="yes")
+    panel = Label(image=picture)
+    panel.pack(side="bottom", fill="both", expand="yes")
 
 
     print("option 2")
